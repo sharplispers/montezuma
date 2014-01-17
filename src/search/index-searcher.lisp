@@ -38,7 +38,7 @@
 (defmethod term-doc-freqs ((self index-searcher) (terms sequence))
   (let ((result (make-array (length terms))))
     (dosequence (i terms)
-      (setf (aref i result) 
+      (setf (aref result i)
             (term-doc-freq self (aref terms i))))
     (values result)))
 

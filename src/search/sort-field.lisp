@@ -34,7 +34,7 @@
     :reverse-p NIL))
 
 (defmethod initialize-instance :after ((self sort-field) &key)
-  (with-slots (name) self
+  (with-slots (name sort-type) self
     (setf name (string name))
     (unless (slot-boundp self 'comparator)
       (setf (slot-value self 'comparator) (comparator (slot-value self 'sort-type))))

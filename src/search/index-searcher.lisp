@@ -60,7 +60,7 @@
 	 (max-size (+ first-doc num-docs))
 	 (sort (getf options :sort)))
     (when (and sort (not (typep sort 'sort)))
-      (setf sort (make-instance 'sort :sort sort)))
+      (setf sort (make-instance 'sort :fields sort)))
     (when (<= num-docs 0)
       (error ":num-docs must be greater than zero to run a search."))
     (when (< first-doc 0)

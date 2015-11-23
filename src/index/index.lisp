@@ -351,9 +351,10 @@
   (num-docs (reader self)))
 
 (defmethod add-indexes ((self index) &rest indexes)
+  (declare (cl:optimize (debug 3)))
   (when (> (length indexes) 0)
     (when (typep (elt indexes 0) 'index)
-      (setf indexes (map 'vector #'reader indexes)))
+      (setf indexes (map 'list #'reader indexes)))
     (cond ((typep (elt indexes 0) 'index-reader)
 	   (let ((reader (reader self)))
 	     (setf indexes (remove reader indexes)))

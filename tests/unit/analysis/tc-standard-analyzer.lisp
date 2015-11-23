@@ -2,7 +2,7 @@
 
 (deftestfun test-standard-analyzer
   (with-input-from-string (input "D.Ba_l-n@gma-l.com AB&Sons Toys'r'us you're she's, #$%^$%*& job@dot I.B.M. the an AnD THEIR")
-    (let* ((analyzer (make-instance 'standard-analyzer))
+    (let* ((analyzer (make-instance 'standard-analyzer :stop-words nil))
 	   (token-stream (token-stream analyzer "field" input)))
       (test standard-analyzer-1 (next-token token-stream) (make-token "d.ba_l-n@gma-l.com" 0 18) #'token=)
       (test standard-analyzer-2 (next-token token-stream) (make-token "ab&sons" 19 26) #'token=)

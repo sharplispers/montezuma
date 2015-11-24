@@ -82,6 +82,7 @@
 (defun check-query-parse (query-string expected-parse-tree)
   (atest check-query-parse
 	 (parse (make-instance 'test-query-parser
+                               :analyzer (make-instance 'standard-analyzer :stop-words nil)
 			       :fields '("f1" "f2"))
 		query-string)
 	 expected-parse-tree
@@ -104,7 +105,7 @@
 		(:BOOLEAN-CLAUSE :SHOULD-OCCUR (:TERM-QUERY "*" "def"))))) 
 	     ("john's"
 	      (:BOOLEAN-QUERY ((:BOOLEAN-CLAUSE :SHOULD-OCCUR (:TERM-QUERY "*" "john")))))
-	     ("john's email is jjwiseman@yahoo.com mail-to"
+	     ("john's email is jjwiseman@yahoo.com \"mail to\""
 	      (:BOOLEAN-QUERY
 	       ((:BOOLEAN-CLAUSE :SHOULD-OCCUR (:TERM-QUERY "*" "john"))
 		(:BOOLEAN-CLAUSE :SHOULD-OCCUR (:TERM-QUERY "*" "email"))

@@ -2,7 +2,9 @@
 
 
 (defclass test-query-parser (query-parser)
-  ())
+  ()
+  (:default-initargs
+   :analyzer (make-instance 'standard-analyzer :stop-words nil)))
 
 
 (defmethod $add-and-clause ((parser test-query-parser) clauses clause)

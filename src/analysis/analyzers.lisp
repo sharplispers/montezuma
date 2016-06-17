@@ -3,7 +3,8 @@
 (defclass analyzer ()
   ())
 
-(defgeneric token-stream (analyzer field string-or-stream))
+(defgeneric token-stream (analyzer field string-or-stream)
+  (:documentation "Return a TOKEN-STREAM. The stream is consumed with NEXT-TOKEN."))
 
 (defmethod token-stream ((self analyzer) field string-or-stream)
   (declare (ignore field))
@@ -40,7 +41,8 @@
 
     
 (defclass stop-analyzer (analyzer)
-  ((stop-words :initarg :stop-words))
+  ((stop-words :initarg :stop-words
+               :documentation "A list of words the analyzer should skip."))
   (:default-initargs 
    :stop-words *english-stop-words*))
 
@@ -53,7 +55,9 @@
 
 
 (defclass standard-analyzer (stop-analyzer)
-  ())
+  ()
+  (:documentation "The STANDARD-ANALYZER skips stop words, normalizes to lower
+  case and also filter tokens through the STANDARD-TOKENIZER."))
 
 (defmethod token-stream ((self standard-analyzer) field string-or-stream)
   (declare (ignore field))

@@ -54,7 +54,6 @@
   ())
 
 (defmethod token-regexp ((self letter-tokenizer))
-  ;; FIXME: [a-zA-Z] isn't quite the same as Perl's [[alpha]], is it?
   (cl-ppcre:create-scanner "[a-zA-Z]+" :multi-line-mode T))
 
 (defclass lowercase-tokenizer (letter-tokenizer)

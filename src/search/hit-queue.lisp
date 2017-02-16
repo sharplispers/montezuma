@@ -16,7 +16,7 @@
   (with-slots (fields reader) queue
     (flet ((hit-document-value (hit value)
              (let ((field (document-field 
-                            (get-document reader (doc hit1))
+                            (get-document reader (doc hit))
                             value)))
                (and 
                  field 
@@ -30,9 +30,8 @@
                   (value-2 (hit-document-value hit2 name)))
               (or 
                 (not value-1)
-                (not (string= value-1 value-2))
                 (funcall 
                   (if reverse-p 
-                    #'string>
-                    #'string<)
+                    #'string<
+                    #'string>)
                   value-1 value-2)))))))))

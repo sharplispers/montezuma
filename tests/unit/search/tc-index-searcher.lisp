@@ -32,6 +32,16 @@
     (dotimes (i (length docs))
       (atest check-docs-2 (doc (elt docs i)) (elt expected i)))))
 
+(defun search-collect-doc (index query-string &rest options)
+  "Performs a search-each and collects the doc numbers returned in order."
+  (let ((docs (list)))
+    (search-each index query-string 
+                 (lambda (doc rank)
+                   (declare (ignore rank))
+                   (push doc docs))
+                 options)
+    (nreverse docs)))
+
 (deftestfixture index-searcher-test
   (:setup
    (setf (fixture-var 'dir) (make-instance 'ram-directory))
@@ -240,6 +250,24 @@
       (search-each (make-instance 'montezuma:index) "john.______________________________________________________"
                    #'(lambda (doc score)
                        (format t "~&Document ~S found with score of ~S." doc score)))))
+  (:testfun test-field-sorting-basic
+     (let ((index (make-instance 'index)))
+       (dosequence (doc (fixture-var 'documents))
+         (add-document-to-index index doc))
+       (test test-field-sorting-basic-1
+             (search-collect-doc index "date:*"
+                                 :sort '("date") :num-docs 4)
+             '(0 1 2 3))
+       (test test-field-sorting-basic-2
+             (search-collect-doc index "date:*"
+                                 :sort (make-instance 'sort :fields '("date") :reverse-p t) :num-docs 4)
+             '(17 16 15 14))
+       (test test-field-sorting-basic-3
+             (delete 8 ;;Delete 8 since both 6 and 8 have the same 'cat', the final order could be 8 6 or 6 8
+                     (search-collect-doc index "field:word3 not word2"
+                                         :sort (make-instance 'sort :fields '("cat") :reverse-p t)))
+             '(11 6 3 2 14))))
+       
   #||
   (:testfun test-multi-phrase-query
    (let ((t11 (make-term "field" "quick"))
@@ -259,3 +287,4 @@
 
 
 )
+
